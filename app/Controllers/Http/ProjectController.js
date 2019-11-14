@@ -1,19 +1,14 @@
 'use strict';
 
-/** @typedef {import('@adonisjs/framework/src/Request')} Request */
-/** @typedef {import('@adonisjs/framework/src/Response')} Response */
-/** @typedef {import('@adonisjs/framework/src/View')} View */
-
 const Project = use('App/Models/Project');
 
-/**
- * Resourceful controller for interacting with projects
- */
 class ProjectController {
-  async index({ request, response, view }) {
+  async index({ request }) {
+    const { page } = request.get();
+
     const projects = await Project.query()
       .with('user')
-      .fetch();
+      .paginate(page);
 
     return projects;
   }
